@@ -1,6 +1,8 @@
 <?php
 const TOKEN = '1631861651:AAF8cxTry8RoZhB2nIFeLIXO6S5KzesuGJg';
 const BASE_URL = "https://api.telegram.org/bot".TOKEN."/";
+$link = "dbname=d84pot3p9gld95 host=ec2-54-247-158-179.eu-west-1.compute.amazonaws.com port=5432 user=exkbqcvcpnvduz password=b2210c4a962c2b5d3826407c668631eac689a24dc9560d82138aeb38051a5b78 sslmode=require";
+
 
 function sendRequest($method, $params = []) {
 
@@ -19,13 +21,19 @@ $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
 
 if($text == '/start') {
-	$message = 'Use the command /setbudget to enter your amount of money.';
+	$message = 'Type command /setname.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+}elseif($text == '/setname') {
+	$message = 'Tell me your name.';
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+}elseif($message == 'Tell me your name.' && $text != '/setname' && is_string($text)) {
+	$message = 'Use command /setbudget to set your amount of money';
+	$query = pg_query($link, "CREATE TABLE {$text} (whole_amount integer NOT NULL);");
 }elseif($text == '/setbudget') {
 	$message = 'Enter your amount of money.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }elseif(is_numeric($text)) {
-	$message = $text;
+	$query = pg_query($link, );
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }
 ?>
