@@ -19,7 +19,12 @@ $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
 
 if($text == '/start') {
-	$text = 'Enter your amount of money. Use the command /setbudget.';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $text]);
+	$message = 'Use the command /setbudget to enter your amount of money.';
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+}elseif($text == '/setbudget') {
+	$message = 'Enter your amount of money.';
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+}elseif(is_numeric($text)) {
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }
 ?>
