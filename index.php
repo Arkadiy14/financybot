@@ -25,6 +25,7 @@ if($text == '/start') {
 	$message = 'Enter your amount of money.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }elseif(is_numeric($text)) {
+	$message = $text;
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }
 ?>
