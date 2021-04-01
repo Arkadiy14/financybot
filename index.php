@@ -26,7 +26,7 @@ if($text == '/start') {
 }elseif($text == '/setname') {
 	$message = 'Tell me your name.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-}elseif($message == '/start' && $text != '/setname' && $text != '/setbudget' && is_string($text)) {
+}elseif($message != '/start' && $text != '/setname' && $text != '/setbudget' && is_string($text)) {
 	$message = 'Use command /setbudget to set your amount of money';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	$table_name = $text;
