@@ -28,12 +28,12 @@ if($text == '/start') {
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 }elseif($message == 'Tell me your name.' && $text != '/setname' && is_string($text)) {
 	$message = 'Use command /setbudget to set your amount of money';
-	$query = pg_query($link, "CREATE TABLE {$text} (whole_amount integer NOT NULL);");
+	$table_name = $text;
+	$query = pg_query($link, "CREATE TABLE {$table_name} (whole_amount integer NOT NULL);");
 }elseif($text == '/setbudget') {
 	$message = 'Enter your amount of money.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }elseif(is_numeric($text)) {
-	$query = pg_query($link, );
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	$query = pg_query($link, "INSERT INTO {$table_name} (whole_amount) VALUES ({$text});");
 }
 ?>
