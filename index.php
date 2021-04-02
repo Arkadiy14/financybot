@@ -30,7 +30,7 @@ if($text == '/start') {
 	$message = 'Use command /setbudget to set your amount of money';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	$table_name = $text;
-	$query = pg_query($link, "CREATE TABLE {$table_name} (whole_amount integer NOT NULL);");
+	$query = pg_query($link, "CREATE TABLE {$table_name} (budget INTEGER NOT NULL, remainder INTEGER NOT NULL;");
 }elseif($text == '/setbudget') {
 	$message = 'Enter your amount of money.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
