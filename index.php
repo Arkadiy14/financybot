@@ -25,17 +25,18 @@ if($text == '/start') {
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-	$message = 'Type information this way: `your name`: `your budget for a month`. Example => Bob: 1000';	
+	$message = 'Type information this way: name, budget, month. Example => Bob, 1000, March';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }else { // if user sending his name and budget
-	$info = explode(': ', $text);
+	$info = explode(', ', $text);
 	if(is_string($info[0]) && is_numeric($info[1])) {
-		$name = $info[0];
-		$budget = $info[1];
-		$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER);");
+	$name = $info[0];
+	$budget = $info[1];
+	$month = $info[2];
+	$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
 		if(true) {
-			$query = pg_query($link, "INSERT INTO {$name} (budget, remainder) VALUES ({$budget}, {$budget});");
+		    $query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ({$budget}, {$budget}, {$month});");
 			$message = 'You can use command /addcosts to add some costs.';
 			sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 		}
