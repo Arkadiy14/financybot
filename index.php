@@ -23,7 +23,7 @@ $text = $update['message']['text'];
 if($text == '/start') {
     $message = 'Use command /setinfo to set all needed information!';	
     $a = sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-var_dump($a);
+    var_dump($a);
 }elseif($text == '/setinfo') {
 	$message = 'Type information this way: `your name`: `your budget for a month`. Example => Bob: 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
