@@ -21,40 +21,23 @@ $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
 
 if($text == '/start') {
-    $message = 'Type command /setname.';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    $message = 'Use command /setinfo to set all needed information!';	
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
-}elseif($text == '/setname') {
-    $message = 'Tell me your name.';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+}elseif($text == '/setinfo') {
+	$message = 'Type information this way: `your name`: `your budget for a month`. Example => Bob: 1000';	
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}elseif($text != '/start' && $text != '/setname' && $text != '/setbudget' && !is_numeric($text)) {//if user sends name
-    $message = 'Use command /setbudget to set your amount of money';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-	$table_name = $text;
-	$query = pg_query($link, "CREATE TABLE {$table_name} (budget INTEGER, remainder INTEGER);");
-
-}elseif($text == '/setbudget') {
-	$message = 'Enter your amount of money.';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-
-}elseif(is_numeric($text)) { //if user sends his budget for month
-	if(isset($table_name)) {
-		$query = pg_query($link, "INSERT INTO {$table_name} (budget, remainder) VALUES ({$text}, {$text});");
-	}else {
-		$message = 'Enter your name';
-	    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	    if(!is_numeric($text)) {
-	    	$table_name = $text;
-	    	$message = 'Enter your amount of money.';
-	        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	        if(is_numeric($text)) { //if user sends his budget for month
-		    $query = pg_query($link, "INSERT INTO {$table_name} (budget, remainder) VALUES ({$text}, {$text});");	   	
-	        }else {
-	        	$message = 'Try again!';
-	            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	        }
-	    }
-    }
+}else {
+	$info = explode(': ', $text);
+	if(is_string($info[0]) && is_numeric($info[1])) {
+		$name = $info[0];
+		$budget = $info[1];
+		$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER);");
+		if(true) {
+			$query = pg_query($link, "INSERT INTO {$name} (budget, remainder) VALUES ({$budget}, {$budget});");
+		}
+	}
 }
+
 ?>
