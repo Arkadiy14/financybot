@@ -21,20 +21,37 @@ $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
 
 if($text == '/start') {
-	$message = 'Type command /setname.';
+    $message = 'Type command /setname.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+
 }elseif($text == '/setname') {
-	$message = 'Tell me your name.';
+    $message = 'Tell me your name.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-}elseif($text != '/start' && $text != '/setname' && $text != '/setbudget' && is_string($text)) {
-	$message = 'Use command /setbudget to set your amount of money';
+
+}elseif($text != '/start' && $text != '/setname' && $text != '/setbudget' && is_string($text)) { //if user sends his name
+    $message = 'Use command /setbudget to set your amount of money';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	$table_name = $text;
-	$query = pg_query($link, "CREATE TABLE {$table_name} (budget INTEGER NOT NULL, remainder INTEGER NOT NULL);");
+	$query = pg_query($link, "CREATE TABLE {$table_name} (budget INTEGER, remainder INTEGER);");
+
 }elseif($text == '/setbudget') {
 	$message = 'Enter your amount of money.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-}elseif(is_numeric($text)) {
-	$query = pg_query($link, "INSERT INTO {$table_name} (whole_amount) VALUES ({$text});");
+
+}elseif(is_numeric($text)) { //if user sends his budget for month
+	if(isset($table_name)) {
+		$query = pg_query($link, "INSERT INTO {$table_name} (budget, remainder) VALUES ({$text}, {$text});");
+	}else {
+		$message = 'Enter your name';
+	    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	    if(is_string($text)) {
+	    	$table_name = $text;
+	    	$message = 'Enter your amount of money.';
+	        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	        if(is_numeric($text)) { //if user sends his budget for month
+		    $query = pg_query($link, "INSERT INTO {$table_name} (budget, remainder) VALUES ({$text}, {$text});");	   	
+	     }
+	  }
+   }
 }
 ?>
