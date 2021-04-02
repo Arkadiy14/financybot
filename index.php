@@ -44,14 +44,17 @@ if($text == '/start') {
 	}else {
 		$message = 'Enter your name';
 	    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	    if(is_string($text)) {
+	    if(!is_numeric($text)) {
 	    	$table_name = $text;
 	    	$message = 'Enter your amount of money.';
 	        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	        if(is_numeric($text)) { //if user sends his budget for month
 		    $query = pg_query($link, "INSERT INTO {$table_name} (budget, remainder) VALUES ({$text}, {$text});");	   	
-	     }
-	  }
-   }
+	        }else {
+	        	$message = 'Try again!';
+	            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	        }
+	    }
+    }
 }
 ?>
