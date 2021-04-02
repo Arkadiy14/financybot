@@ -20,7 +20,7 @@ $update = json_decode(file_get_contents('php://input'), JSON_OBJECT_AS_ARRAY);
 $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
 
-if($text == '/start') {
+if($text == '/start') { 
     $message = 'Use command /setinfo to set all needed information!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
@@ -28,7 +28,7 @@ if($text == '/start') {
 	$message = 'Type information this way: `your name`: `your budget for a month`. Example => Bob: 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}else {
+}else { // if user sending his name and budget
 	$info = explode(': ', $text);
 	if(is_string($info[0]) && is_numeric($info[1])) {
 		$name = $info[0];
