@@ -23,6 +23,7 @@ $text = $update['message']['text'];
 if($text == '/start') {
     $message = 'Use command /setinfo to set all needed information!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+
 }elseif($text == '/setinfo') {
 	$message = 'Type information this way: `your name`: `your budget for a month`. Example => Bob: 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
@@ -35,6 +36,8 @@ if($text == '/start') {
 		$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER);");
 		if(true) {
 			$query = pg_query($link, "INSERT INTO {$name} (budget, remainder) VALUES ({$budget}, {$budget});");
+			$message = 'You can use command /addcosts to add some costs.';
+			sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 		}
 	}else {
 		$message = 'Try again!';	
