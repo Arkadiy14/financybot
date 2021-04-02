@@ -37,6 +37,10 @@ if($text == '/start') {
 		if(true) {
 			$query = pg_query($link, "INSERT INTO {$name} (budget, remainder) VALUES ({$budget}, {$budget});");
 		}
+	}else {
+		$message = 'Try again!';	
+        $a = sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+        echo $a;
 	}
 }
 
