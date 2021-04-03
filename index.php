@@ -54,7 +54,7 @@ if($text == '/addcosts') {
 	Example => Arkadiy, clothes, 100' && $text != '/addcosts') {
 $info = $explode(', ', $text);
 //if user sends some costs
-if(substr($text, 0, 1) != '/' && is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
+if(is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
 	$name = $info[0];
 	$costs = $info[1];
 	$money = $info[2];
