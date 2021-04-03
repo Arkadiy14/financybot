@@ -53,6 +53,8 @@ if($text == '/addcosts') {
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 }
 
+if($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
+	Example => Arkadiy, clothes, 100') {
 $info = $explode(', ', $text);
 //if user sends some costs
 if(substr($text, 0, 1) != '/' && is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
@@ -66,9 +68,10 @@ if(substr($text, 0, 1) != '/' && is_string($info[0]) && is_string($info[1]) && i
 		$message = 'Try again!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
-	
+
 }else {
 	$message = 'Try again!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+}
 }
 ?>
