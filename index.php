@@ -60,10 +60,10 @@ if($text == '/addcosts') {
 	    $name = $info[0];
 	    $costs = $info[1];
 	    $money = $info[2];
-	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} VARCHAR (25) NOT NULL;");
+	    $query = pg_query($link, "ALTER TABLE '{$name}' ADD COLUMN '{$costs}' VARCHAR (25) NOT NULL;");
 
 	    if(true) {
-		    $query = pg_query($link, "INSERT INTO {$name} ({$costs}) VALUES ({$money});");
+		    $query = pg_query($link, "INSERT INTO '{$name}' ('{$costs}') VALUES ('{$money}');");
 	    }else {
 		    $message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
