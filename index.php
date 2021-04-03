@@ -32,7 +32,7 @@ if($text == '/start') {
 }elseif($message = 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
     // if user sending his name and budget
 	$info = explode(', ', $text);
-	if(is_string($info[0]) && is_numeric($info[1])) {
+	if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
 	$name = $info[0];
 	$budget = $info[1];
 	$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
@@ -56,11 +56,11 @@ if($text == '/addcosts') {
 	Example => Arkadiy, clothes, 100' && $text != '/addcosts') { // if user sends some costs
     $info = $explode(', ', $text);
 
-    if(is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
+    if(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) { 
 	    $name = $info[0];
 	    $costs = $info[1];
 	    $money = $info[2];
-	    $query = pg_query($link, "ALTER TABLE '{$name}' ADD COLUMN '{$costs}' VARCHAR (25) NOT NULL;");
+	    $query = pg_query($link, "ALTER TABLE '{$name}' ADD COLUMN '{$costs}' VARCHAR (25);");
 
 	    if(true) {
 		    $query = pg_query($link, "INSERT INTO '{$name}' ('{$costs}') VALUES ('{$money}');");
