@@ -31,7 +31,7 @@ if($text == '/start') {
 
 }else { // if user sending his name, budget and month
 	$info = explode(', ', $text);
-	if(is_string($info[0]) && is_numeric($info[1]) && is_string($info[2])) {
+	if(is_string($info[0]) && is_numeric($info[1])) {
 	$name = $info[0];
 	$budget = $info[1];
 	$month = $info[2];
