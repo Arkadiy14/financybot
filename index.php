@@ -29,7 +29,7 @@ if($text == '/start') {
 	$message = 'Type information this way: name, budget. Example => Bob, 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}else { // if user sending his name, budget and month
+}else { // if user sending his name and budget
 	$info = explode(', ', $text);
 	if(is_string($info[0]) && is_numeric($info[1])) {
 	$name = $info[0];
@@ -50,9 +50,7 @@ if($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-}
-
-if($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
+}elseif($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100' && $text != '/addcosts') {
 $info = $explode(', ', $text);
 //if user sends some costs
