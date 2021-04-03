@@ -53,7 +53,7 @@ if($text == '/addcosts') {
 }
 
 if($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
-	Example => Arkadiy, clothes, 100') {
+	Example => Arkadiy, clothes, 100' && $text != '/addcosts') {
 $info = $explode(', ', $text);
 //if user sends some costs
 if(substr($text, 0, 1) != '/' && is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
