@@ -29,7 +29,8 @@ if($text == '/start') {
 	$message = 'Type information this way: name, budget. Example => Bob, 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}else { // if user sending his name and budget
+}elseif($message = 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
+    // if user sending his name and budget
 	$info = explode(', ', $text);
 	if(is_string($info[0]) && is_numeric($info[1])) {
 	$name = $info[0];
