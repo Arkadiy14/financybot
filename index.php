@@ -34,7 +34,6 @@ if($text == '/start') {
 	if(is_string($info[0]) && is_numeric($info[1])) {
 	$name = $info[0];
 	$budget = $info[1];
-	$month = $info[2];
 	$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
 		if(true) {
 		    $query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
