@@ -50,25 +50,27 @@ if($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-}elseif($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
-	Example => Arkadiy, clothes, 100' && $text != '/addcosts') {
-$info = $explode(', ', $text);
-//if user sends some costs
-if(is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
-	$name = $info[0];
-	$costs = $info[1];
-	$money = $info[2];
-	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} WHERE month = {$month};");
-	if(true) {
-		$query = pg_query($link, "INSERT INTO {$name} ({$costs}) VALUES ({$money});");
-	}else {
-		$message = 'Try again!';	
-        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	}
 
-}else {
-	$message = 'Try again!';	
-    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-}
+}elseif($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
+	Example => Arkadiy, clothes, 100' && $text != '/addcosts') { // if user sends some costs
+    $info = $explode(', ', $text);
+
+    if(is_string($info[0]) && is_string($info[1]) && is_numeric($info[2])) { 
+	    $name = $info[0];
+	    $costs = $info[1];
+	    $money = $info[2];
+	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} VARCHAR (25) NOT NULL;");
+
+	    if(true) {
+		    $query = pg_query($link, "INSERT INTO {$name} ({$costs}) VALUES ({$money});");
+	    }else {
+		    $message = 'Try again!';	
+            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	    }
+
+    }else {
+	    $message = 'Try again!';	
+        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    }
 }
 ?>
