@@ -67,7 +67,6 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
         }else {
         	$message = 'Try again!';
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-
         } 
 
 	}else {
