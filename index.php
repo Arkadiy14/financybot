@@ -26,10 +26,10 @@ if($text == '/start') {
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-	$message = 'Type information this way: name, budget. Example => bob, 1000. Do not use capital letters!';	
+	$message = 'Type information this way: bob, 1000. Do not use capital letters!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}elseif($message == 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
+}elseif($message == 'Type information this way: bob, 1000. Do not use capital letters!' && substr($text, 0, 1) != '/') {
     // if user sending his name and budget
 	$info = explode(', ', $text);
 	if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
