@@ -26,7 +26,7 @@ if($text == '/start') {
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-	$message = 'Type information this way: name, budget. Example => Bob, 1000';	
+	$message = 'Type information this way: name, budget. Example => bob, 1000. Do not use capital letters!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($message == 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
@@ -54,7 +54,7 @@ if($text == '/addcosts') {
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
-	Example => Arkadiy, clothes, 100' && $text != '/addcosts') { // if user sends some costs
+	Example => bob, clothes, 100' && $text != '/addcosts') { // if user sends some costs
     $info = $explode(', ', $text);
     $message = 'ok';
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
