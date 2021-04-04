@@ -29,7 +29,7 @@ if($text == '/start') {
 	$message = 'Type information this way: name, budget. Example => Bob, 1000';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-}elseif($message = 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
+}elseif($message == 'Type information this way: name, budget. Example => Bob, 1000' && substr($text, 0, 1) != '/') {
     // if user sending his name and budget
 	$info = explode(', ', $text);
 	if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
@@ -45,8 +45,10 @@ if($text == '/start') {
 		$message = 'Try again!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
-	
-}elseif($text == '/addcosts') {
+
+}
+
+if($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
@@ -58,14 +60,14 @@ if($text == '/start') {
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 
-    /*if(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) { 
+    if(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) { 
 	    $name = $info[0];
 	    $costs = $info[1];
 	    $money = $info[2];
-	    $query = pg_query($link, "ALTER TABLE '{$name}' ADD COLUMN '{$costs}' VARCHAR (25);");
+	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} VARCHAR (25);");
 
 	    if(true) {
-		    $query = pg_query($link, "INSERT INTO '{$name}' ('{$costs}') VALUES ('{$money}');");
+		    $query = pg_query($link, "INSERT INTO {$name} ('{$costs}') VALUES ('{$money}');");
 	    }else {
 		    $message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
@@ -74,6 +76,6 @@ if($text == '/start') {
     }else {
 	    $message = 'Try again!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-    }*/
+    }
 }
 ?>
