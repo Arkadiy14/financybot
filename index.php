@@ -58,20 +58,20 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$name = $info[0];
 	$costs = $info[1];
 	$money = $info[2];
-	$res_query = pg_query($link, "SELECT budget FROM {$name};");
-	    if(true) {
-	    	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
-		    $message = 'Your costs were added!';	
+	$result = pg_query($link, "SELECT * FROM {$name} WHERE month = {$month};");
+	    if(!$result) {
+	    	$message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         }else {
-        	$message = 'Try again!';
+        	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
+        	$message = 'Your costs were added!';	
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         } 
 
-	}else {
-		$message = 'Try again!';	
-        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	}
+}else {
+	$message = 'Try again!';	
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+}
 
 }
 ?>
