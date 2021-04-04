@@ -58,7 +58,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$name = $info[0];
 	$costs = $info[1];
 	$money = $info[2];
-	$result = pg_query($link, "SELECT * FROM {$name} WHERE month = {$month};");
+	$result = pg_query($link, "SELECT * FROM {$name};");
 	    if(!$result) {
 	    	$message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
