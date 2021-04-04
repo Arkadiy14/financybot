@@ -31,7 +31,7 @@ if($text == '/start') {
 
 }elseif($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
-	Example => Arkadiy, clothes, 100';
+	Example => bob, clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }	
 
@@ -61,7 +61,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} VARCHAR (25);");
 
 	    if(true) {
-		    $query = pg_query($link, "INSERT INTO {$name} ('{$costs}') VALUES ('{$money}');");
+		    $query2 = pg_query($link, "INSERT INTO {$name} ('{$costs}') VALUES ('{$money}');");
 	    }else {
 		    $message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
