@@ -58,8 +58,10 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$name = $info[0];
 	$costs = $info[1];
 	$money = $info[2];
-	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
-	    if(true) {
+	$res_query = pg_query($link, "SELECT budget FROM {$name};");
+	$res = pg_fetch_result($res_query, 0, 0);
+	    if(!empty($res)) {
+	    	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
 		    $message = 'Your costs were added!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         }else {
