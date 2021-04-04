@@ -45,9 +45,8 @@ if($text == '/start') {
 		$message = 'Try again!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
-}
-
-if($text == '/addcosts') {
+	
+}elseif($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
