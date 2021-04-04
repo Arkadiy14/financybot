@@ -60,7 +60,7 @@ if($text == '/addcosts') {
 	    $name = $info[0];
 	    $costs = $info[1];
 	    $money = $info[2];
-	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} VARCHAR (25);");
+	    $query = pg_query($link, "ALTER TABLE '{$name}' ADD COLUMN '{$costs}' VARCHAR (25);");
 
 	    if(true) {
 		    $query = pg_query($link, "INSERT INTO '{$name}' ('{$costs}') VALUES ('{$money}');");
