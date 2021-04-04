@@ -55,8 +55,11 @@ if($text == '/addcosts') {
 }elseif($message == 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
 	Example => Arkadiy, clothes, 100' && $text != '/addcosts') { // if user sends some costs
     $info = $explode(', ', $text);
+    $message = 'ok';
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
-    if(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) { 
+
+    /*if(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) { 
 	    $name = $info[0];
 	    $costs = $info[1];
 	    $money = $info[2];
@@ -64,14 +67,14 @@ if($text == '/addcosts') {
 
 	    if(true) {
 		    $query = pg_query($link, "INSERT INTO '{$name}' ('{$costs}') VALUES ('{$money}');");
-	    }/*else {
+	    }else {
 		    $message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	    }*/
+	    }
 
     }else {
 	    $message = 'Try again!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-    }
+    }*/
 }
 ?>
