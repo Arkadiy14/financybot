@@ -35,9 +35,9 @@ if($text == '/start') {
 	if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
 	$name = $info[0];
 	$budget = $info[1];
-	$query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
+	$query = pg_query($link, "CREATE TABLE '{$name}' (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
 		if(true) {
-		    $query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+		    $query = pg_query($link, "INSERT INTO '{$name}' (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 			$message = 'You can use command /addcosts to add some costs.';
 			sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 		}
