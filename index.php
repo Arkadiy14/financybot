@@ -17,7 +17,7 @@ function sendRequest($method, $params = []) {
 }
 
 function makeName($chat_id) {
-	return 'table'.substr($chat_id, 0, 3).substr($chat_id, 6, 8);
+	return 'table'.substr($chat_id, 0, 3).substr($chat_id, 6, 3);
 }
 
 $update = json_decode(file_get_contents('php://input'), JSON_OBJECT_AS_ARRAY);
