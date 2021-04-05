@@ -23,7 +23,7 @@ $text = $update['message']['text'];
 
 if($text == '/start') { 
     $message = 'Use command /setinfo to set all needed information!';	
-    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $chat_id]);
 
 }elseif($text == '/setinfo') {
 	$message = 'Type information this way: bob, 1000 (example). Do not use capital letters!';	
