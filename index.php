@@ -61,13 +61,11 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
-$info = explode(', ', $text);
-
-}elseif(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
+}elseif(explode(', ', $text) && !empty(is_string($text[0])) && !empty(is_numeric($text[1]))) {
     // if user is sending some costs
 	$costs = $info[0];
 	$money = $info[1];
-	
+
         	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         	$remainder = pg_fetch_result($remainder_query, 0, 0);
         	$new_remainder = $remainder - $money; // update remainder 
