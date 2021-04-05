@@ -97,8 +97,15 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
 	if($query) {
 	   $result = pg_fetch_result($query, 0, 0);
-	   $message = "You spent $result on $costs this month";
-	   sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	   
+	   if($costs == 'remainder' || $costs == 'budget') {
+	   	  $message = "Your $costs is $result.";
+	      sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	   }else {
+	      $message = "You spent $result on $costs this month";
+	      sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	   }
+
     }else {
        $message = 'Try again!';
        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
