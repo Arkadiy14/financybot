@@ -17,7 +17,7 @@ function sendRequest($method, $params = []) {
 }
 
 function makeName($chat_id) {
-	return 'table'.substr($chat_id, 0, 2).substr($chat_id, 6, 8);
+	return 'table'.substr($chat_id, 0, 3).substr($chat_id, 6, 8);
 }
 
 $update = json_decode(file_get_contents('php://input'), JSON_OBJECT_AS_ARRAY);
@@ -47,8 +47,9 @@ if($text == '/start') {
 
 
 if(substr($text, 0, 1) != '/') { //if user is sending his own information
+$info = explode(', ', $text);
 
-if(!empty(is_numeric($text))) { // if user is sending his budget
+if(is_numeric($text)) { // if user is sending his budget
     $budget = $text;
     $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
@@ -61,9 +62,8 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
-}elseif(explode(', ', $text)) {
+}elseif(is_string($info[0]) && is_numeric($info[1])) {
     // if user is sending some costs
-    $info = explode(', ', $text);
 	$costs = $info[0];
 	$money = $info[1];
 
@@ -86,7 +86,7 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         	$message = 'Your costs were added!';	
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
-}elseif(is_string($text)) {
+}elseif(is_string($info[0]) && !isset($info[1])) {
 	// if user is sending some data to check his costs
 	$costs = $text;
 	$query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
