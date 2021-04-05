@@ -45,7 +45,7 @@ if(isset($text) && substr($text, 0, 1) != '/') { //if user is sending his own in
 $info = explode(', ', $text);
 
 if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is sending his name and budget
-    $name = $info[0];
+    $name = $chat_id;
     $budget = $info[1];
     $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
@@ -60,7 +60,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 
 }elseif(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) {
     // if user is sending some costs
-	$name = $info[0];
+	$name = $chat_id;
 	$costs = $info[1];
 	$money = $info[2];
 	$result = pg_query($link, "SELECT remainder FROM {$name};"); // getting remainder to update it later 
@@ -92,7 +92,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 
 }elseif(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !isset($info[2])) {
 	// if user is sending some data to check his costs
-	$name = $info[0];
+	$name = $chat_id;
 	$costs = $info[1];
 	$query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
 	if($query) {
