@@ -63,7 +63,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	    	$message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         }else {
-        	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = {$month};");
+        	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         	$remainder = pg_fetch_result($remainder_query, 0, 0);
         	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
         	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};");
