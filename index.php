@@ -66,8 +66,18 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
         	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         	$remainder = pg_fetch_result($remainder_query, 0, 0);
         	$new_remainder = $remainder - $money;
-        	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
+
+        	$costs_query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
+        	if(!$costs_query) {
+        	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});";
+        	}else {
+        	   $costs = pg_fetch_result($costs_query, 0, 0);
+        	   $new_money = $costs + $money;
+        	   $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$new_money});";
+        	}
+
         	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};");
+
         	$message = 'Your costs were added!';	
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         } 
