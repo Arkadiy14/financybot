@@ -16,41 +16,44 @@ function sendRequest($method, $params = []) {
 	return json_decode(file_get_contents($url), JSON_OBJECT_AS_ARRAY);
 }
 
+function makeName($chat_id) {
+	return 'table'.substr($chat_id, 0, 2).substr($chat_id, 6, 8);
+}
+
 $update = json_decode(file_get_contents('php://input'), JSON_OBJECT_AS_ARRAY);
 
 $chat_id = $update['message']['chat']['id'];
 $text = $update['message']['text'];
+$name = makeName($chat_id);
 
 if($text == '/start') { 
     $message = 'Use command /setinfo to set all needed information!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-	$message = 'Type information this way: bob, 1000 (example). Do not use capital letters!';	
+	$message = 'Enter your budget this way: 5000 (example).';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($text == '/addcosts') {
-	$message = 'Type your data this way for a more secure: name, how you spent your money, how much did you spend it.
-	Example => bob, clothes, 100';
+	$message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it.
+	Example => clothes, 100';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/getdata') {
-	$message = 'What do you want to know about? Type it this way: bob, food.';
+	$message = 'What do you want to know about? Type it this way: food.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }	
 
 
 
-if(isset($text) && substr($text, 0, 1) != '/') { //if user is sending his own information
-$info = explode(', ', $text);
+if(substr($text, 0, 1) != '/') { //if user is sending his own information
 
 if(!empty(is_numeric($text))) { // if user is sending his budget
-    $name = $chat_id;
     $budget = $text;
-    $query = pg_query($link, "CREATE TABLE '{$name}' (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
+    $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
     if($query) { // if there is no table with name '$name'
-		$query = pg_query($link, "INSERT INTO '{$name}' (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+		$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 		$message = 'You can use command /addcosts to add some costs.';
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	}else { // if there is table with name '$name'
@@ -58,9 +61,10 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
+$info = explode(', ', $text);
+
 }elseif(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
     // if user is sending some costs
-	$name = $chat_id;
 	$costs = $info[0];
 	$money = $info[1];
 	$result = pg_query($link, "SELECT remainder FROM {$name};"); // getting remainder to update it later 
@@ -90,10 +94,9 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         } 
 
-}elseif(!empty(is_string($info[0]))) {
+}elseif(is_string($text)) {
 	// if user is sending some data to check his costs
-	$name = $chat_id;
-	$costs = $info[1];
+	$costs = $text;
 	$query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
 	if($query) {
 	   $result = pg_fetch_result($query, 0, 0);
