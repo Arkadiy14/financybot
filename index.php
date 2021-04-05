@@ -23,7 +23,7 @@ $text = $update['message']['text'];
 
 if($text == '/start') { 
     $message = 'Use command /setinfo to set all needed information!';	
-    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $chat_id]);
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
 	$message = 'Type information this way: bob, 1000 (example). Do not use capital letters!';	
@@ -44,13 +44,13 @@ if($text == '/start') {
 if(isset($text) && substr($text, 0, 1) != '/') { //if user is sending his own information
 $info = explode(', ', $text);
 
-if(!empty(is_numeric($text))) { // if user is sending his name and budget
+if(!empty(is_numeric($text))) { // if user is sending his budget
     $name = $chat_id;
     $budget = $text;
-    $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
+    $query = pg_query($link, "CREATE TABLE '{$name}' (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
     if($query) { // if there is no table with name '$name'
-		$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+		$query = pg_query($link, "INSERT INTO '{$name}' (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 		$message = 'You can use command /addcosts to add some costs.';
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	}else { // if there is table with name '$name'
