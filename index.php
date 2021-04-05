@@ -75,7 +75,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
         	}else {
         		$costs_result = pg_fetch_result($costs_query, 0, 0);
         		$new_money = $costs_result + $money;
-        	  $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$new_money});");
+        	  $query = pg_query($link, "UPDATE {$name} SET {$costs} = {$new_money};");
         	}
 
         	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};");
