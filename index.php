@@ -58,12 +58,14 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$name = $info[0];
 	$costs = $info[1];
 	$money = $info[2];
-	$result = pg_query($link, "SELECT * FROM {$name};");
+	$result = pg_query($link, "SELECT remainder FROM {$name};");
 	    if(!$result) {
 	    	$message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         }else {
+        	$new_remainder = $remainder - $money;
         	$query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
+        	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};");
         	$message = 'Your costs were added!';	
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         } 
