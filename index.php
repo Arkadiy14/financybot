@@ -45,7 +45,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
     $budget = $info[1];
     $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
-    if(true) {
+    if($query) {
 		$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 		$message = 'You can use command /addcosts to add some costs.';
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
@@ -59,9 +59,11 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 	$costs = $info[1];
 	$money = $info[2];
 	$result = pg_query($link, "SELECT remainder FROM {$name};");
+
 	    if(!$result) {
 	    	$message = 'Try again!';	
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+
         }else {
         	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         	$remainder = pg_fetch_result($remainder_query, 0, 0);
@@ -69,11 +71,11 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
 
         	$costs_query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
         	if(!$costs_query) {
-        	    $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});";
+                $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
         	}else {
-        	   $costs = pg_fetch_result($costs_query, 0, 0);
-        	   $new_money = $costs + $money;
-        	   $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$new_money});";
+        		$costs_result = pg_fetch_result($costs_query, 0, 0);
+        		$new_money = $costs_result + $money;
+        	  $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$new_money});");
         	}
 
         	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};");
