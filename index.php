@@ -44,9 +44,9 @@ if($text == '/start') {
 if(isset($text) && substr($text, 0, 1) != '/') { //if user is sending his own information
 $info = explode(', ', $text);
 
-if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is sending his name and budget
+if(!empty(is_numeric($text))) { // if user is sending his name and budget
     $name = $chat_id;
-    $budget = $info[1];
+    $budget = $text;
     $query = pg_query($link, "CREATE TABLE {$name} (budget INTEGER, remainder INTEGER, month VARCHAR (15) NOT NULL);");
     
     if($query) { // if there is no table with name '$name'
@@ -58,11 +58,11 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
-}elseif(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !empty(is_numeric($info[2]))) {
+}elseif(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) {
     // if user is sending some costs
 	$name = $chat_id;
-	$costs = $info[1];
-	$money = $info[2];
+	$costs = $info[0];
+	$money = $info[1];
 	$result = pg_query($link, "SELECT remainder FROM {$name};"); // getting remainder to update it later 
 
 	    if(!$result) { // if there is no remainder (no table) with name '$name'
@@ -90,7 +90,7 @@ if(!empty(is_string($info[0])) && !empty(is_numeric($info[1]))) { // if user is 
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         } 
 
-}elseif(!empty(is_string($info[0])) && !empty(is_string($info[1])) && !isset($info[2])) {
+}elseif(!empty(is_string($info[0]))) {
 	// if user is sending some data to check his costs
 	$name = $chat_id;
 	$costs = $info[1];
