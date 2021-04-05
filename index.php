@@ -67,13 +67,7 @@ $info = explode(', ', $text);
     // if user is sending some costs
 	$costs = $info[0];
 	$money = $info[1];
-	$result = pg_query($link, "SELECT remainder FROM {$name};"); // getting remainder to update it later 
-
-	    if(!$result) { // if there is no remainder (no table) with name '$name'
-	    	$message = 'Try again!';	
-            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-
-        }else { // if there is remainder (table) with name '$name'
+	
         	$remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         	$remainder = pg_fetch_result($remainder_query, 0, 0);
         	$new_remainder = $remainder - $money; // update remainder 
@@ -92,7 +86,6 @@ $info = explode(', ', $text);
 
         	$message = 'Your costs were added!';	
         	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-        } 
 
 }elseif(is_string($text)) {
 	// if user is sending some data to check his costs
