@@ -61,8 +61,9 @@ if(!empty(is_numeric($text))) { // if user is sending his budget
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
-}elseif(explode(', ', $text) && !empty(is_string($text[0])) && !empty(is_numeric($text[1]))) {
+}elseif(explode(', ', $text)) {
     // if user is sending some costs
+    $info = explode(', ', $text);
 	$costs = $info[0];
 	$money = $info[1];
 
