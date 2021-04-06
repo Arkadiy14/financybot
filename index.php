@@ -31,17 +31,16 @@ if($text == '/start') {
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-	$message = 'Enter your budget this way: 5000 (example).';	
+    $message = 'Enter your budget this way: 5000 (example).';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($text == '/addcosts') {
-	$message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it.
-	Example => clothes, 100';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    $message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it. Example => clothes, 100';
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/getdata') {
-	$message = 'What do you want to know about? Type it this way: food.';
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    $message = 'What do you want to know about? Type it this way: food.';
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }	
 
 
@@ -59,7 +58,7 @@ if(is_numeric($text)) { // if user is sending his budget
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 	}else { // if there is table with name '$name'
 		$message = 'Try again!';	
-        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+                sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	}
 
 }elseif(is_string($info[0]) && is_numeric($info[1])) {
@@ -90,15 +89,16 @@ if(is_numeric($text)) { // if user is sending his budget
 	// if user is sending some data to check his costs
 	$costs = $text;
 	$query = pg_query($link, "SELECT {$costs} FROM {$name} WHERE month = '{$month}';");
+	
 	if($query) {
 	   $result = pg_fetch_result($query, 0, 0);
 	   
-	   if($costs == 'remainder' || $costs == 'budget') {
-	   	  $message = "Your $costs is $result.";
-	      sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	   }else {
-	      $message = "You spent $result on $costs this month";
-	      sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	if($costs == 'remainder' || $costs == 'budget') {
+	   $message = "Your $costs is $result.";
+	   sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	}else {
+	   $message = "You spent $result on $costs this month";
+	   sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 	   }
 
     }else {
@@ -107,7 +107,7 @@ if(is_numeric($text)) { // if user is sending his budget
     }
 
 }else { // if user sent wrong data
-	$message = 'Try again!';	
+    $message = 'Try again!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }
 
