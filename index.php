@@ -1,7 +1,7 @@
 <?php
-const TOKEN = '1631861651:AAF8cxTry8RoZhB2nIFeLIXO6S5KzesuGJg';
+const TOKEN = 'TOKEN';
 const BASE_URL = "https://api.telegram.org/bot".TOKEN."/";
-$link = pg_connect("dbname=d84pot3p9gld95 host=ec2-54-247-158-179.eu-west-1.compute.amazonaws.com port=5432 user=exkbqcvcpnvduz password=b2210c4a962c2b5d3826407c668631eac689a24dc9560d82138aeb38051a5b78 sslmode=require");
+$link = pg_connect("CONNECT");
 $month = date("F");
 
 
