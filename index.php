@@ -61,25 +61,25 @@ if(is_numeric($text)) { // if user is sending his budget
     $query = pg_query($link, "CREATE TABLE {$name} (month VARCHAR (15) NOT NULL, budget INTEGER, remainder INTEGER);");
     
     if($query) { // if there is no table with name '$name'
-		$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
-		$message = 'You can use command /addcosts to add some costs.';
-		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-	}else { // if there is table with name '$name'
+	$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+	$message = 'You can use command /addcosts to add some costs.';
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+    }else { // if there is table with name '$name'
 
-	    $budget_query = pg_query($link, "SELECT budget FROM {$name} WHERE month = '{$month}';");
-	    $old_budget = pg_fetch_result($budget_query, 0, 0);
-	    $new_budget = $old_budget + $budget; // update budget
+	$budget_query = pg_query($link, "SELECT budget FROM {$name} WHERE month = '{$month}';");
+	$old_budget = pg_fetch_result($budget_query, 0, 0);
+	$new_budget = $old_budget + $budget; // update budget
 
         $remainder_query = pg_query($link, "SELECT remainder FROM {$name} WHERE month = '{$month}';");
         $remainder = pg_fetch_result($remainder_query, 0, 0);
         $new_remainder = $remainder + $budget; // update remainder 
 
-	    $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
-	    $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
+	$query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
+	$query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
 
-		$message = 'Your data was updated!';	
+        $message = 'Your data was updated!';	
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	}
+    }
 
 }elseif(is_string($info[0]) && is_numeric($info[1])) {
     // if user is sending some costs
