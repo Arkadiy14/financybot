@@ -1,5 +1,5 @@
 <?php
-const TOKEN = '1631861651:AAF8cxTry8RoZhB2nIFeLIXO6S5KzesuGJg';
+const TOKEN = 'TOKEN';
 $method = 'setWebhook';
 $url = 'https://api.telegram.org/bot'.TOKEN.'/'.$method;
 $options = [
