@@ -23,8 +23,8 @@ function makeName($chat_id) {
 $content = file_get_contents('php://input');
 $update = json_decode($content, TRUE);
 $mes = $update['message'];
-$chat_id = $mes['chat']['id'];
 
+$chat_id = $mes['chat']['id'];
 $text = $update['message']['text'];
 $name = makeName($chat_id);
 
@@ -81,8 +81,7 @@ if(is_numeric($text)) { // if user is sending his budget
         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
     }
 
-}elseif(is_string($info[0]) && is_numeric($info[1])) {
-    // if user is sending some costs
+}elseif(is_string($info[0]) && is_numeric($info[1])) { // if user is sending some costs
     $costs = $info[0];
     $money = $info[1];
 
