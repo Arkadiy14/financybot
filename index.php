@@ -87,15 +87,20 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
        $message = 'You can use command /addcosts to add some costs.';
        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
     }else { // if there is table with name '$name'
+        $month_db = getData('month');
 
-       $new_budget = getData('budget') + $budget;
-       $new_remainder = getData('remainder') + $budget;
+        if($month_db) {
+	    $new_budget = getData('budget') + $budget;
+            $new_remainder = getData('remainder') + $budget;
 
-       $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
-       $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
+            $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
+            $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
 
-       $message = 'Your data was updated!';	
-       sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	    $message = 'Your data was updated!';	
+            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+        }else {
+            $query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+        }
     }
 
 }elseif(is_string($info[0]) && $info[0] != 'add' && is_numeric($info[1])) { // if user is sending some costs
