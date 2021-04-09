@@ -28,7 +28,7 @@ function getData($column) {
 	if($query) {
 	$result = pg_fetch_result($query, 0, 0);
 	return $result;
-    }
+        }
 }
 
 
@@ -41,12 +41,12 @@ $text = $update['message']['text'];
 $name = makeName($chat_id);
 
 if($text == '/start') { 
-    $message = 'Use command /setinfo to set all needed information!';	
-    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+   $message = 'Use command /setinfo to set all needed information!';	
+   sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
 	$message = 'Enter your budget this way: add 5000 (example). If your budget got bigger, you can add new amount of money to your old budget, just type it!';	
-    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($text == '/addcosts') {
 	$message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it. Example => clothes 100';
@@ -55,20 +55,20 @@ if($text == '/start') {
 }elseif($text == '/getdata') { // if user wants to get all information
 	$query = pg_query($link, "SELECT * FROM {$name} WHERE month='{$month}';");
         if($query) {
-	       $result = pg_fetch_array($query);
-	       foreach($result as $key => $value) {
-		      $message = "$key: $value";
-		      if(!is_numeric(substr($message, 0, 1))) {
+	   $result = pg_fetch_array($query);
+	   foreach($result as $key => $value) {
+		   $message = "$key: $value";
+		   if(!is_numeric(substr($message, 0, 1))) {
 		         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	          }
-	       }
+	           }
+	   }
 
            if(getData('budget') && getData('food')) {
-	          $result = getData('budget') / getData('food');
-	          if($result < 2) {
-		         $message = 'Be careful with food!';
-		         sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	          }
+	      $result = getData('budget') / getData('food');
+	      if($result < 2) {
+		 $message = 'Be careful with food!';
+		 sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	      }
            }
         }
 }	
@@ -79,32 +79,32 @@ if(substr($text, 0, 1) != '/') { //if user is sending his own information
 $info = explode(' ', $text);
 
 if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
-    $budget = $info[1];
-    $query = pg_query($link, "CREATE TABLE {$name} (month VARCHAR (15) NOT NULL, budget INTEGER, remainder INTEGER);");
+   $budget = $info[1];
+   $query = pg_query($link, "CREATE TABLE {$name} (month VARCHAR (15) NOT NULL, budget INTEGER, remainder INTEGER);");
     
     if($query) { // if there is no table with name '$name'
-		$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
-		$message = 'You can use command /addcosts to add some costs.';
-		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-	}else { // if there is table with name '$name'
+       $query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
+       $message = 'You can use command /addcosts to add some costs.';
+       sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+    }else { // if there is table with name '$name'
 
-	    $new_budget = getData('budget') + $budget;
-	    $new_remainder = getData('remainder') + $budget;
+       $new_budget = getData('budget') + $budget;
+       $new_remainder = getData('remainder') + $budget;
 
-	    $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
-	    $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
+       $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget};"); // set new budget
+       $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder};"); // set new remainder
 
-		$message = 'Your data was updated!';	
-        sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	}
+       $message = 'Your data was updated!';	
+       sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    }
 
 }elseif(is_string($info[0]) && $info[0] != 'add' && is_numeric($info[1])) { // if user is sending some costs
 	$costs = $info[0];
 	$money = $info[1];
 
-    $new_remainder = getData('remainder') - $money; // update remainder 
+        $new_remainder = getData('remainder') - $money; // update remainder 
 
-    $costs_check = getData($costs);
+        $costs_check = getData($costs);
     // checking if there already are some costs '$costs'
     if(!$costs_check) { // if there aren't
         $query = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER NOT NULL DEFAULT({$money});");
