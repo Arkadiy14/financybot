@@ -56,10 +56,13 @@ if($text == '/start') {
     if($query) {
 	$result = pg_fetch_array($query);
         foreach($result as $key => $value) {
-		$message = "$key: $value";
-		if(!is_numeric(substr($message, 0, 1))) {
-	            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	        }
+	   if(!is_numeric(substr($key, 0, 1))) {
+	       $message = "$key: $value";
+	       if($key != 'remainder' && $value == 0) {
+		  continue;
+               }
+	       sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	   }
 	}
 
            if(getData('budget') && getData('food')) {
