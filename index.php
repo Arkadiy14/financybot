@@ -114,7 +114,7 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
     // checking if there already are some costs '$costs'
     if(!$costs_check) { // if there aren't
         $query1 = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER;");
-        $query3 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
+        $query2 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
     }else { // if there are
         $new_money = $costs_check + $money; // adding new amount of money to costs '$costs'
         $query_costs = pg_query($link, "UPDATE {$name} SET {$costs} = {$new_money} WHERE month='{$month}';");        
