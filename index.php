@@ -51,7 +51,7 @@ if($text == '/start') {
     $message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it. Example => clothes 100';
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
-}elseif($text == '/getdata') { // if user wants to get all information
+}elseif($text == '/getinfo') { // if user wants to get all information
     $query = pg_query($link, "SELECT * FROM {$name} WHERE month='{$month}';");
     if($query) {
 	$result = pg_fetch_array($query);
