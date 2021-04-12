@@ -88,8 +88,8 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
 	$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 	$message = 'You can use command /addcosts to add some costs.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-	}else { // if there is table with name '$name'
-	    $month_db = getData('month');
+    }else { // if there is table with name '$name'
+        $month_db = getData('month');
 
 	    if($month_db == $month) {
 	        $new_budget = getData('budget') + $budget;
@@ -107,7 +107,7 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
         	$message = 'Your data was updated!';	
                 sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
             }
-	}
+    }
 
 }elseif(is_string($info[0]) && $info[0] != 'add' && is_numeric($info[1])) { // if user is sending some costs
     $costs = $info[0];
@@ -117,7 +117,7 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
     // checking if there already are some costs '$costs'
     if(!$costs_check) { // if there aren't
         $query1 = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER DEFAULT(0);");
-        $query3 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
+        $query2 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
     }else { // if there are
         $new_money = $costs_check + $money; // adding new amount of money to costs '$costs'
         $query_costs = pg_query($link, "UPDATE {$name} SET {$costs} = {$new_money} WHERE month='{$month}';");        
