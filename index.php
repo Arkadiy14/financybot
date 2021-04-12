@@ -39,40 +39,40 @@ $chat_id = $mes['chat']['id'];
 $text = $update['message']['text'];
 $name = makeName($chat_id);
 
+
+$months = array(
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July ',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+);
+
 if($text == '/start') { 
     $message = 'Use command /setinfo to set all needed information!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/setinfo') {
-    $message = 'Enter your budget this way: add 5000 (example). If your budget got bigger, you can add new amount of money to your old budget, just type it!';	
+    $message = 'Enter your budget this way: add 5000 (example)
+If your budget got bigger, you can add new amount of money to your old budget, just type it again!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
 
 }elseif($text == '/addcosts') {
-    $message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it. Example => clothes 100';
+    $message = 'Type your data this way for a more secure: how you spent your money, how much did you spend it.
+Example: clothes 100';
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 
 }elseif($text == '/getinfo') { // if user wants to get all information
-    $query = pg_query($link, "SELECT * FROM {$name} WHERE month='{$month}';");
-    if($query) {
-	$result = pg_fetch_array($query);
-        foreach($result as $key => $value) {
-	   if(!is_numeric(substr($key, 0, 1))) {
-	       $message = "$key: $value";
-	       if($key != 'remainder' && $value == 0) {
-		  continue;
-               }
-	       sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	   }
-	}
-
-           if(getData('budget') && getData('food')) {
-	       $result = getData('budget') / getData('food');
-	       if($result < 2) {
-	           $message = 'Be careful with food!';
-	           sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-	       }
-           }
-        }
+    $message = 'If you want to get all information about your budget, just type the name of month: april. 
+If you want to know only about your remainder or something else, type it this way: remainder';
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }	
 
 
@@ -88,26 +88,26 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
 	$query = pg_query($link, "INSERT INTO {$name} (budget, remainder, month) VALUES ('{$budget}', '{$budget}', '{$month}');");
 	$message = 'You can use command /addcosts to add some costs.';
 	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
-    }else { // if there is table with name '$name'
-        $month_db = getData('month');
+	}else { // if there is table with name '$name'
+	    $month_db = getData('month');
 
-        if($month_db == $month) {
-	    $new_budget = getData('budget') + $budget;
-	    $new_remainder = getData('remainder') + $budget;
+	    if($month_db == $month) {
+	        $new_budget = getData('budget') + $budget;
+	        $new_remainder = getData('remainder') + $budget;
 
-            $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget} WHERE month='{$month}';");
-	    // set new budget
-	    $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder} WHERE month='{$month}';");
-	    // set new remainder
+	        $query1 = pg_query($link, "UPDATE {$name} SET budget = {$new_budget} WHERE month='{$month}';");
+	        // set new budget
+	        $query2 = pg_query($link, "UPDATE {$name} SET remainder = {$new_remainder} WHERE month='{$month}';");
+	        // set new remainder
 
-	    $message = 'Your data was updated!';	
-            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-        }else {
-            $query = pg_query($link, "INSERT INTO {$name} (month, budget, remainder) VALUES ('{$month}', '{$budget}', '{$budget}');");
-            $message = 'Your data was updated!';	
-            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-        }
-    }
+	        $message = 'Your data was updated!';	
+                sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+            }else {
+        	$query = pg_query($link, "INSERT INTO {$name} (month, budget, remainder) VALUES ('{$month}', '{$budget}', '{$budget}');");
+        	$message = 'Your data was updated!';	
+                sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+            }
+	}
 
 }elseif(is_string($info[0]) && $info[0] != 'add' && is_numeric($info[1])) { // if user is sending some costs
     $costs = $info[0];
@@ -116,8 +116,8 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
     $costs_check = getData($costs);
     // checking if there already are some costs '$costs'
     if(!$costs_check) { // if there aren't
-        $query1 = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER;");
-        $query2 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
+        $query1 = pg_query($link, "ALTER TABLE {$name} ADD COLUMN {$costs} INTEGER DEFAULT(0);");
+        $query3 = pg_query($link, "UPDATE {$name} SET {$costs} = {$money} WHERE month='{$month}';");
     }else { // if there are
         $new_money = $costs_check + $money; // adding new amount of money to costs '$costs'
         $query_costs = pg_query($link, "UPDATE {$name} SET {$costs} = {$new_money} WHERE month='{$month}';");        
@@ -128,6 +128,56 @@ if($info[0] == 'add' && is_numeric($info[1])) { // if user is sending his budget
     // set new remainder
     $message = 'Your costs were added!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+
+}elseif(is_string($text) && !isset($info[1])) { // if user wants to get some info
+$text2 = ucfirst($text);
+$m = 0;
+
+foreach($months as $value) {
+    if($value == $text2) {
+	$m = $value;
+    }
+}
+
+$user_month = $m; 
+
+    if($user_month) {
+        $query = pg_query($link, "SELECT * FROM {$name} WHERE month='{$user_month}';");
+
+        if($query) {
+	    $result = pg_fetch_array($query);
+	    foreach($result as $key => $value) {
+	       if(!is_numeric(substr($key, 0, 1))) {
+	           $message = "$key: $value";
+	      	   if($key != 'remainder' && $value == 0) {
+	      	       continue;
+	      	   }
+   	      	    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+               }
+            }
+
+        if(getData('budget') && getData('food')) {
+            $result = getData('budget') / getData('food');
+            if($result < 2) {
+		$message = 'Be careful with food!';
+                sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+	    }
+        }
+    }
+
+    }else {
+        $text = lcfirst($text2);
+        $data = getData($text);
+
+        if($data) {
+	    $message = "$text: $data";
+	    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+        }else {
+	    $message = 'Try again!';	
+            sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+        }
+    }
+
 }else {
     $message = 'Try again!';	
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
