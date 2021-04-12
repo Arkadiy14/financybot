@@ -71,7 +71,7 @@ Example: clothes 100';
 
 }elseif($text == '/getinfo') { // if user wants to get all information
     $message = 'If you want to get all information about your budget, just type the name of month: april. 
-If you want to know only about your remainder or something else, type it this way: remainder';
+If you want to know only about your remainder or something else (for current month), type it this way: remainder';
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
 }	
 
