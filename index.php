@@ -27,7 +27,7 @@ function getData($column) {
 	if($query) {
 	$result = pg_fetch_result($query, 0, 0);
 	return $result;
-    }
+        }
 }
 
 
@@ -79,7 +79,7 @@ If you want to know only about your remainder or something else (for current mon
 //if user is sending his own information
 $info = explode(' ', $text);
 
-if($info[0] == 'add' && is_numeric($info[1]) && isset($info[1])) { // if user is sending his budget
+if($info[0] == 'add'  && isset($info[1]) && is_numeric($info[1])) { // if user is sending his budget
     $budget = $info[1];
     $query = pg_query($link, "CREATE TABLE {$name} (month VARCHAR (15) NOT NULL, year INTEGER, budget INTEGER, remainder INTEGER);");
     
