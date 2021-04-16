@@ -73,7 +73,13 @@ Example: clothes 100';
     $message = 'If you want to get all information about your budget, just type the name of month: april. 
 If you want to know only about your remainder or something else (for current month), type it this way: remainder';
     sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
-}	
+	
+}elseif($text == '/report') {
+	$message = 'What year do you want to know about?
+Type it: 2021 (example)';	
+    sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);	
+
+}
 
 
 //if user is sending his own information
@@ -173,7 +179,7 @@ if($info[0] == 'add'  && isset($info[1]) && is_numeric($info[1])) { // if user i
 
     }
 
-}elseif(is_string($text) && !isset($info[1]) && substr($text, 0, 1) != '/') { // if user wants to get some info
+}elseif(!is_string($info[0]) && !isset($info[1]) && substr($text, 0, 1) != '/') { // if user wants to get some info
     $data = getData($text);
 
     if($data) {
@@ -189,6 +195,21 @@ if($info[0] == 'add'  && isset($info[1]) && is_numeric($info[1])) { // if user i
             sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
         }
 
+    }
+	
+}elseif(is_numeric($info[0]) && !isset($info[1])) {
+    $year = $text;
+    $query1 = pg_query($link, "SELECT SUM(budget) as sum1 FROM table565088 WHERE year={$year};");
+    $budget = pg_fetch_result($query1, 0, 0);
+    if($budget) {
+	$query2 = pg_query($link, "SELECT SUM(remainder) as sum2 FROM table565088 WHERE year={$year};");
+	$remainder = pg_fetch_result($query2, 0, 0);
+	$message = "budget: $budget
+remainder: $remainder";
+    	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
+    }else {
+    	$message = 'Try again!';
+    	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $message]);
     }
 }
 ?>
