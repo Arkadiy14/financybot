@@ -179,7 +179,7 @@ if($info[0] == 'add'  && isset($info[1]) && is_numeric($info[1])) { // if user i
 
     }
 
-}elseif(!is_string($info[0]) && !isset($info[1]) && substr($text, 0, 1) != '/') { // if user wants to get some info
+}elseif(!is_numeric($info[0]) && !isset($info[1]) && substr($text, 0, 1) != '/') { // if user wants to get some info
     $data = getData($text);
 
     if($data) {
