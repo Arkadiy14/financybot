@@ -199,10 +199,10 @@ if($info[0] == 'add'  && isset($info[1]) && is_numeric($info[1])) { // if user i
 	
 }elseif(is_numeric($info[0]) && !isset($info[1])) {
     $year = $text;
-    $query1 = pg_query($link, "SELECT SUM(budget) as sum1 FROM table565088 WHERE year={$year};");
+    $query1 = pg_query($link, "SELECT SUM(budget) as sum1 FROM {$name} WHERE year={$year};");
     $budget = pg_fetch_result($query1, 0, 0);
     if($budget) {
-	$query2 = pg_query($link, "SELECT SUM(remainder) as sum2 FROM table565088 WHERE year={$year};");
+	$query2 = pg_query($link, "SELECT SUM(remainder) as sum2 FROM {$name} WHERE year={$year};");
 	$remainder = pg_fetch_result($query2, 0, 0);
 	$message = "budget: $budget
 remainder: $remainder";
