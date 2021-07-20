@@ -25,8 +25,8 @@ function getData($column) {
 	global $link, $name, $month;
 	$query = pg_query($link, "SELECT {$column} FROM {$name} WHERE month='{$month}';");
 	if($query) {
-	$result = pg_fetch_result($query, 0, 0);
-	return $result;
+	    $result = pg_fetch_result($query, 0, 0);
+	    return $result;
         }
 }
 
